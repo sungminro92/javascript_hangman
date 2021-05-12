@@ -17,3 +17,13 @@ body {
 .textCenter {
   text-align: center;
 }
+
+.pd20 {
+  padding: 20px;
+}
+
+.letters {
+  margin: 5px;
+  width: 40px;
+  height: 40px;
+}
