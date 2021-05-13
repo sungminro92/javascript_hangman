@@ -7,61 +7,65 @@ const url = "https://pokeapi.co/api/v2/generation/"
 // load pokemons into one array
 //
 function loadPokemons(level) {
-  GameData.pokeBank = [];
+  GameData.pokeBank = []; // array of pokemon
   let generation = level;
-  for(i=1; i<9; i++) {
-    // console.log(url+i);
+  for(i=1; i<9; i++) { // loop through all 9 generation of pokemons
     fetch(url + i + "/")
     .then(pokeData => {
-      return pokeData.json();
+      return pokeData.json(); // generation json data
     })
     .then(pokeJson => {
-      for(j=0; j<pokeJson.pokemon_species.length; j++) {
-          let pokemon = pokeJson.pokemon_species[j]
-          let pokeName = pokemon.name;
-          let pokeUrl = pokemon.url
-          let pokemonId;
-          fetch(pokeUrl)
-          .then(pokemonUrl => {
-            return pokemonUrl.json();
-          })
-          .then(pokemonUrlJson => {
-            pokemonId = pokemonUrlJson.id;
-            console.log(pokemonId);
-            return pokemonId;
-          })
-          .then(pokemonId => {
-            GameData.pokeBank.push({
-                id: pokemonId,
-                name: pokeName
-            });
-          })
-      }
-      console.log(GameData.pokeBank);
+      for(j=0; j<pokeJson.pokemon_species.length; j++) { // start setting individual pokemon
+        let pokemon = pokeJson.pokemon_species[j]
+        let pokeName = pokemon.name;
+        let pokeUrl = pokemon.url
+        let pokemonId;
+        fetch(pokeUrl)
+        .then(pokemonUrl => {
+          return pokemonUrl.json();
+        })
+        .then(pokemonUrlJson => {
+          let gen = pokemonUrlJson.generation.name;
+          if(gen == "generation-i") {
+            gen = 1;
+          } else if (gen == "generation-ii") {
+            gen = 2;
+          } else if (gen == "generation-iii") {
+            gen = 3;
+          } else if (gen == "generation-iv") {
+            gen = 4;
+          } else if (gen == "generation-v") {
+            gen = 5;
+          } else if (gen == "generation-vi") {
+            gen = 6;
+          } else if (gen == "generation-vii") {
+            gen = 7;
+          } else if (gen == "generation-viii") {
+            gen = 8;
+          } else {
+            gen = null;
+          }
+          pokemonId = pokemonUrlJson.id;
+          GameData.pokeBank.push({
+              id: pokemonId,
+              name: pokeName,
+              gen: gen
+          });
+          // return pokemonId;
+        })
+        // .then(pokemonId => {
+        //
+        //   return
+        // })
+      } // end of setting each pokemon loop
     })
-    // .then(pokeJson => {
-    //   // console.log(pokeJson.pokemon_species);
-    //   let pokemons = pokeJson.pokemon_species;
-    //   // let poke_names = [];
-    //   // let poke_urls = [];
-    //   for(j=0; j< (pokemons.length); j++) {
-    //   let name = pokemons[j].name;
-    //     GameData.pokeBank.push(name);
-    //   }
-    // })
-    // generation++;
-    // console.log(GameData.pokeBank);
   }
+  console.log(GameData.pokeBank);
   return GameData.pokeBank;
-
 }
-
-
-
 
 // CREATE GAME STATUS DATA OBJECT
 const GameData = {
-  // user:[],
   isPlaying: false, // status of the game
   generationUrls: [], // decides sets of different pokemon series
   level: 0,
@@ -71,64 +75,42 @@ const GameData = {
   pokeWord: null,
   pokeImg: null,
 
-  showWord: null,
+  playerName: null,
   score: 0,
   guess: 10,
 
-  // setGenerationUrls: function(level) {
-  //   fetch(url)
-  //   .then(data => {
-  //     return data.json();
-  //   }).then( json => {
-  //     // setting generation urls to generationUrls array
-  //     for (let i=0; i<json.results.length; i++){
-  //       this.generationUrls[i] = json.results[i].url;
-  //     }
-  //     //console.log urls
-  //     console.log("urls: " + this.generationUrls);
-  //
-  //     console.log(this.level);
-  //     // console.log(pokemons[0].name);
-  //     return this.level;
-  //   }).then( level => {
-  //     this.setPokemons(this.generationUrls[level]);
-  //   })
-  // },
+  scoreIncrement: () => {
+    this.score++;
+  },
 
-  // setPokemons: function(level) {
-  //   this.pokeBank = [];
-  //   let generation = level;
-  //   for(i=1; i<9; i++) {
-  //     fetch(url + generation + "/")
-  //     .then(pokeData => {
-  //       return pokeData.json();
-  //     })
-  //     .then(pokeJson => {
-  //       // for(let i=0; i< pokeJson.)
-  //       // console.log(pokeJson);
-  //       let pokemons = pokeJson.pokemon_species;
-  //       // console.log(pokemons);
-  //       let poke_names = [];
-  //       let poke_urls = [];
-  //       for(i=0; i< pokemons.length; i++) {
-  //         this.pokeBank.push({
-  //           name: pokemons[i].name,
-  //           // poke_url: pokemons[i].url
-  //         })
-  //       }
-  //     })
-  //     generation++;
-  //   }
-  //   console.log(this.pokeBank);
-  // },
+  guessDecrement: () => {
+    this.guess--;
+  },
+
+  setPlayerName: (userName) => {
+    this.playerName = userName;
+  },
+
+  setGeneration: (generation) => {
+    this.generation = generation;
+    console.log(this.generation);
+  },
+
+  letterInWord(letter) {
+      for (i=0;i<this.word.length;i++) {
+        if (letter == this.word[i]) {
+          return true;
+        }
+      }
+      return false;
+    },
 
   chooseRandomPoke: function() {
     let randomNumber = Math.floor(Math.random()*this.pokeBank.length)
     let pokemon = this.pokeBank[randomNumber];
-    console.log(randomNumber);
-    console.log(pokemon);
+    // console.log(randomNumber);
+    this.pokeWord = pokemon.name;
     this.pokeId = pokemon.id;
-    console.log(this.pokeId)
     return this.pokeId;
   },
 
@@ -146,16 +128,7 @@ const GameData = {
     imgTag.attr("id", this.pokeId)
   },
 
-  // CHECKING IF THE LETTER IS RIGHT
-  letterInWord(letter) {
-    for(i=0; i<this.word.length; i++) {
-      if(letter == this.word[i]) {
-        return true
-      } else {
-        return false
-      }
-    }
-  }
+
   //   difficultyLevel: null, // refers to 'difficulty level'
 
 
@@ -195,32 +168,20 @@ const ViewEngine = {
   },
 }
 
-//   showPokeImg() {
-//     let pokemonBox = $(".pokemonBox");
-//     pokemonBox.empty();
-//     let img = $('<img id="pokeI">'); //Equivalent: $(document.createElement('img'))
-//     img.attr('src', GameData.pokeImg);
-//     img.attr('width', '500px');
-//     img.appendTo(pokemonBox);
-//     console.log(GameData.pokeWord);
-//   }
-// }
-
 loadPokemons(1);
-// loadPokeImgs();
 
 window.onload = function() {
   console.log("js is working fine");
 
   // set pokemons depending on user's choice of generation
 
-  // $("select").change(function() {
-  //   let level = 0;
-  //   $("select option:selected").each(function() {
-  //     level = $(this).val();
-  //     GameData.setPokemons(level);
-  //   })
-  // });
+  $("select").change(function() {
+    let generation = 1;
+    $("select option:selected").each(function() {
+      generation = $(this).val();
+      GameData.setGeneration(generation);
+    })
+  });
 
 
   $('#playGame').click(GameController.startGame);
