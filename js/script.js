@@ -6,9 +6,8 @@ const url = "https://pokeapi.co/api/v2/generation/"
 
 // load pokemons into one array
 //
-function loadPokemons(level) {
+function loadPokemons() {
   GameData.pokeBank = []; // array of pokemon
-  let generation = level;
   for(i=1; i<9; i++) { // loop through all 9 generation of pokemons
     fetch(url + i + "/")
     .then(pokeData => {
@@ -53,10 +52,6 @@ function loadPokemons(level) {
           });
           // return pokemonId;
         })
-        // .then(pokemonId => {
-        //
-        //   return
-        // })
       } // end of setting each pokemon loop
     })
   }
@@ -71,6 +66,7 @@ const GameData = {
   level: 0,
   pokeBank: [], // sets pokemon names in an array
   // pokemon: null,
+  generation: 1,
   pokeId: null, // sets pokemon id of pokeBank array
   pokeWord: null,
   pokeImg: null,
@@ -91,14 +87,14 @@ const GameData = {
     this.playerName = userName;
   },
 
-  setGeneration: (generation) => {
-    this.generation = generation;
+  setGeneration: (gen) => {
+    this.generation = gen;
     console.log(this.generation);
   },
 
-  letterInWord(letter) {
-      for (i=0;i<this.word.length;i++) {
-        if (letter == this.word[i]) {
+  letterInWord: function(letter) {
+      for (i=0;i<this.pokeWord.length;i++) {
+        if (letter == this.pokeWord[i] || letter.toLowerCase() == this.pokeWord[i]) {
           return true;
         }
       }
@@ -106,15 +102,24 @@ const GameData = {
     },
 
   chooseRandomPoke: function() {
-    let randomNumber = Math.floor(Math.random()*this.pokeBank.length)
-    let pokemon = this.pokeBank[randomNumber];
-    // console.log(randomNumber);
+    // let it = this.generation;
+    // console.log(it); // I'm not sure why this line isn't working.
+
+    let newPokeBank = this.pokeBank.filter(function(d) {
+      return d. gen == this.generation; });
+    // let newPokeBank = this.pokeBank;
+    // console.log(newPokeBank);
+    let randomNumber = Math.floor(Math.random()*newPokeBank.length);
+    let pokemon = newPokeBank[randomNumber];
+    console.log(randomNumber);
     this.pokeWord = pokemon.name;
     this.pokeId = pokemon.id;
+    console.log(this.pokeWord + "/" + this.pokeId);
     return this.pokeId;
   },
 
   loadPokeImgs: function() {
+    // console.log(this.generation);
     let number = this.chooseRandomPoke();
     let imgUrl = "https://pokeres.bastionbot.org/images/pokemon/";
     let img = imgUrl + number  +  ".png";
@@ -128,15 +133,16 @@ const GameData = {
     imgTag.attr("id", this.pokeId)
   },
 
+  startGame: function() {
 
-  //   difficultyLevel: null, // refers to 'difficulty level'
+  },
 
+  resetGame: function() {
+    this.guess = 10;
+    this.score = 0;
+  },
 
-  //   word: null, // current word
-  //   shownWord: null,
-  //   guess: 10, //
-  //   score: 0,
-  //   round: 0,
+  // TO CHECK IF THE LETTER IS RIGHT
 }
 
 // GAME CONTROLLER
@@ -147,8 +153,32 @@ const GameController = {
     ViewEngine.prepareAlphabets();
     // ViewEngine.showPokeImg();
     GameData.loadPokeImgs();
+    var word = GameData.pokeWord;
+    console.log(word);
+    ViewEngine.showMysteryWord(word);
   },
 
+// handleLetterClick
+  checkLetterClick: function(event) {
+    let letterId = event.data.letterId; // this is the alphabet
+    console.log(letterId);
+    // if correct
+    if(GameData.letterInWord(letterId)) {
+      console.log("correct letter");
+      console.log(letterId);
+      // reveal the letter in the pokeWord
+      ViewEngine.revealLetter(letterId);
+      // add 'selected' attribute to the element.
+      // GameData.addAttrById(letterId, 'selected');
+      // add 'disabled' class to elements
+      // ViewEngine.addAttrById(letterId, disabled);
+    } else {
+      console.log("wrong letter");
+    }
+    //
+
+  }
+  // put the chosen letter to be .attr("disabled",true);
 }
 
 // VIEW ENGINE
@@ -160,21 +190,53 @@ const ViewEngine = {
       let letter = String.fromCharCode(65 + i);
       let letterButton = document.createElement("button");
       $(letterButton).text(letter);
-      $(letterButton).attr('id', letter);
+      $(letterButton).attr('id', letter); // id is each alphabet in the word
       $(letterButton).addClass('letters');
       $(alphabetsContainer).append(letterButton);
-      // $(letterButton).click({letterId: letter}, GameController.)
+      $(letterButton).click({letterId: letter}, GameController.checkLetterClick);
     }
   },
+
+  // set mystery empty letters
+  showMysteryWord(word) {
+    let wordBox = $('#letterGuessContainer')
+    let wordArray = word.split("");
+    wordBox.empty();
+    for (i = 0; i < wordArray.length; i++) {
+      let letterGuessDiv = document.createElement("div");
+      $(letterGuessDiv).addClass('letterGuessDiv');
+      $(letterGuessDiv).attr("id", wordArray[i]);
+      wordBox.append(letterGuessDiv);
+      console.log(letterGuessDiv);
+    }
+  },
+
+
+
+  revealLetter(letter) {
+    let pokeWordArray = GameData.pokeWord.split("");
+    for(i=0; i<pokeWordArray.length; i++) {
+      if(letter == pokeWordArray[i] || letter.toLowerCase() == pokeWordArray[i]) {
+        $('#'+letter).text(letter)
+        $('#'+letter.toLowerCase()).text(letter);
+      }
+    }
+  },
+
+  addAttrByClass(className, attribute) { // useful to add attribute to classes
+    $('.' + className).attr(attribute, true);
+  },
+
+  addAttrById(idName, attribute) {
+    $('#' + idName).attr(attribute, true);
+  }
 }
 
-loadPokemons(1);
+loadPokemons();
+GameData.setGeneration(1);
 
 window.onload = function() {
   console.log("js is working fine");
-
-  // set pokemons depending on user's choice of generation
-
   $("select").change(function() {
     let generation = 1;
     $("select option:selected").each(function() {
@@ -182,12 +244,8 @@ window.onload = function() {
       GameData.setGeneration(generation);
     })
   });
-
-
   $('#playGame').click(GameController.startGame);
-  // GameData.setPokemons();
-  // GameData.chooseRandomPoke();
-  // console.log(gen1);
+  $('#resetPokemon').click(GameController.startGame);
 }
 
 // VIEW ENGINE
