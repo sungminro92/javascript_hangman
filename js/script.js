@@ -8,7 +8,7 @@ const url = "https://pokeapi.co/api/v2/generation/"
 //
 function loadPokemons() {
   GameData.pokeBank = []; // array of pokemon
-  for(i=1; i<9; i++) { // loop through all 9 generation of pokemons
+  for(i=1; i<2; i++) { // loop through all 9 generation of pokemons
     fetch(url + i + "/")
     .then(pokeData => {
       return pokeData.json(); // generation json data
@@ -89,7 +89,7 @@ const GameData = {
 
   setGeneration: (gen) => {
     this.generation = gen;
-    console.log(this.generation);
+    // console.log(this.generation);
   },
 
   letterInWord: function(letter) {
@@ -107,8 +107,6 @@ const GameData = {
 
     let newPokeBank = this.pokeBank.filter(function(d) {
       return d. gen == this.generation; });
-    // let newPokeBank = this.pokeBank;
-    // console.log(newPokeBank);
     let randomNumber = Math.floor(Math.random()*newPokeBank.length);
     let pokemon = newPokeBank[randomNumber];
     console.log(randomNumber);
@@ -119,18 +117,17 @@ const GameData = {
   },
 
   loadPokeImgs: function() {
-    // console.log(this.generation);
     let number = this.chooseRandomPoke();
     let imgUrl = "https://pokeres.bastionbot.org/images/pokemon/";
     let img = imgUrl + number  +  ".png";
-    console.log(img);
     let imgTag = $(document.createElement("img"));
     let pokemonBox = $(".pokemonBox");
     pokemonBox.empty();
     imgTag.attr("src", img);
     imgTag.attr("width", "500px");
     imgTag.appendTo(pokemonBox);
-    imgTag.attr("id", this.pokeId)
+    imgTag.attr("id", this.pokeId);
+    imgTag.addClass("pokeImg");
   },
 
   startGame: function() {
@@ -154,7 +151,6 @@ const GameController = {
     // ViewEngine.showPokeImg();
     GameData.loadPokeImgs();
     var word = GameData.pokeWord;
-    console.log(word);
     ViewEngine.showMysteryWord(word);
   },
 
@@ -165,15 +161,19 @@ const GameController = {
     // if correct
     if(GameData.letterInWord(letterId)) {
       console.log("correct letter");
-      console.log(letterId);
       // reveal the letter in the pokeWord
       ViewEngine.revealLetter(letterId);
       // add 'selected' attribute to the element.
-      // GameData.addAttrById(letterId, 'selected');
+      $("#" +letterId).addClass("selected");
       // add 'disabled' class to elements
-      // ViewEngine.addAttrById(letterId, disabled);
+      ViewEngine.addAttrById(letterId, "disabled");
     } else {
       console.log("wrong letter");
+      $("#" +letterId).addClass("wrong-selected");
+      ViewEngine.addAttrById(letterId, "disabled");
+      ViewEngine.addWrongBar();
+      GameData.guess --;
+
     }
     //
 
@@ -211,8 +211,6 @@ const ViewEngine = {
     }
   },
 
-
-
   revealLetter(letter) {
     let pokeWordArray = GameData.pokeWord.split("");
     for(i=0; i<pokeWordArray.length; i++) {
@@ -223,13 +221,23 @@ const ViewEngine = {
     }
   },
 
-  addAttrByClass(className, attribute) { // useful to add attribute to classes
+  addAttrByClass: function(className, attribute) { // useful to add attribute to classes
     $('.' + className).attr(attribute, true);
   },
 
-  addAttrById(idName, attribute) {
+  addAttrById: function(idName, attribute) {
     $('#' + idName).attr(attribute, true);
+  },
+
+  addWrongBar() {
+    let pokemonBox = $('.pokemonBox');
+    $('.pokemonBox').append('<div class="wrongBar"></div>');
+    $(".wrongBar").css("width", pokemonBox.width()/20);
+    $('.wrongBar').css("height", pokemonBox.height());
+    $('.wrongBar').css("marginLeft", pokemonBox.width()/20);
+    // $('.wrongBar').style.marginLeft(pokemonBox.width()/20);
   }
+
 }
 
 loadPokemons();

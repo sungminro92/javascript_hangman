@@ -29,6 +29,7 @@ body {
 }
 
 .letterGuessDiv {
+  background-color: white;
    padding: 5px;
    display: inline;
    width: 40px;
@@ -36,4 +37,46 @@ body {
    padding: 5px;
    border-bottom: 1px solid black;
    margin: 0px 5px 0px 5px;
+}
+
+.selected {
+  background-color: green;
+  border-bottom: 1px solid black;
+}
+
+.wrong-selected {
+  background-color: red;
+  border-bottom: 1px solid black;
+}
+
+.wrongBar {
+   display: inline;
+   float: left;
+   /* width: 14px; */
+   /* height: 250px; */
+   background-color: black;
+   /* margin-left: 24px; */
+   z-index: 1;
+}
+
+.pokeImg {
+  position: absolute;
+  /* display: flex; */
+  z-index: -1;
+  margin: 0 auto;
+}
+
+.pokemonBox {
+  border-top: 10px solid black;
+  border-bottom: 10px solid black;
+  margin-bottom: 25px;
+  width: 550px;
+  height: 550px;
+  /* text-align: center; */
+  /* background-color: yellow; */
+}
+
+.letterGuessContainer {
+  text-align: center;
+  height: 100%;
 }
