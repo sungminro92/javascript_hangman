@@ -79,9 +79,9 @@ const GameData = {
     this.score++;
   },
 
-  guessDecrement: () => {
-    this.guess--;
-  },
+  // guessDecrement: () => {
+  //   this.guess--;
+  // },
 
   setPlayerName: (userName) => {
     this.playerName = userName;
@@ -134,54 +134,14 @@ const GameData = {
 
   },
 
-  resetGame: function() {
-    this.guess = 10;
-    this.score = 0;
-  },
+  // resetP: function() {
+  //   this.guess = 10;
+  //   this.score = 0;
+  // },
 
   // TO CHECK IF THE LETTER IS RIGHT
 }
 
-// GAME CONTROLLER
-const GameController = {
-  startGame() {
-    GameData.isPlaying = true;
-    // GameData.chooseRandomPoke();
-    ViewEngine.prepareAlphabets();
-    // ViewEngine.showPokeImg();
-    GameData.loadPokeImgs();
-    var word = GameData.pokeWord;
-    ViewEngine.showMysteryWord(word);
-  },
-
-// handleLetterClick
-  checkLetterClick: function(event) {
-    let letterId = event.data.letterId; // this is the alphabet
-    console.log(letterId);
-    // if correct
-    if(GameData.letterInWord(letterId)) {
-      console.log("correct letter");
-      // reveal the letter in the pokeWord
-      ViewEngine.revealLetter(letterId);
-      // add 'selected' attribute to the element.
-      $("#" +letterId).addClass("selected");
-      // add 'disabled' class to elements
-      ViewEngine.addAttrById(letterId, "disabled");
-    } else {
-      console.log("wrong letter");
-      $("#" +letterId).addClass("wrong-selected");
-      ViewEngine.addAttrById(letterId, "disabled");
-      ViewEngine.addWrongBar();
-      GameData.guess --;
-
-    }
-    //
-
-  }
-  // put the chosen letter to be .attr("disabled",true);
-}
-
-// VIEW ENGINE
 const ViewEngine = {
   prepareAlphabets() {
     let alphabetsContainer = $(".alphabetsContainer")
@@ -236,9 +196,79 @@ const ViewEngine = {
     $('.wrongBar').css("height", pokemonBox.height());
     $('.wrongBar').css("marginLeft", pokemonBox.width()/20);
     // $('.wrongBar').style.marginLeft(pokemonBox.width()/20);
-  }
+  },
 
+  guessNumber: function() {
+    $('#guessNum').text(GameData.guess);
+  },
+
+  endGame: function() {
+    GameData.guess = 10;
+    GameData.score = 0;
+    $(".pokemonBox").empty();
+    $(".alphabetsContainer").empty();
+    $("#letterGuessContainer").empty();
+    $(".wrongBar").remove();
+    $(".pokemonBox").append("<div style='display: block; color: red; font-size: 40px;'> GAME OVER </div>")
+    $('.pokemonBox').append('<button class="playAgain">PLAY AGAIN</button>');// show Game Over in the box
+    $('.playAgain').moseOver(function() {
+      $('.playAgain').css("color", "red");
+    })
+    $('.playAgain').moseOver(function() {
+      $('.playAgain').css("color", "black");
+    })
+    $('.pokemonBox button').click(GameController.startGame);
+  }
 }
+
+// GAME CONTROLLER
+const GameController = {
+  startGame() {
+    GameData.isPlaying = true;
+    // GameData.chooseRandomPoke();
+    ViewEngine.prepareAlphabets();
+    // ViewEngine.showPokeImg();
+    GameData.loadPokeImgs();
+    var word = GameData.pokeWord;
+    ViewEngine.showMysteryWord(word);
+  },
+
+  // playAgain() {
+  //   GameData.score = 0;
+  //   GameData.guess = 10;
+  // },
+
+// handleLetterClick
+  checkLetterClick: function(event) {
+    let letterId = event.data.letterId; // this is the alphabet
+    console.log(letterId);
+    // if correct
+    if(GameData.letterInWord(letterId)) {
+      console.log("correct letter");
+      // reveal the letter in the pokeWord
+      ViewEngine.revealLetter(letterId);
+      // add 'selected' attribute to the element.
+      $("#" +letterId).addClass("selected");
+      // add 'disabled' class to elements
+      ViewEngine.addAttrById(letterId, "disabled");
+    } else {
+      console.log("wrong letter");
+      $("#" +letterId).addClass("wrong-selected");
+      ViewEngine.addAttrById(letterId, "disabled");
+      ViewEngine.addWrongBar();
+      GameData.guess--;
+      ViewEngine.guessNumber();
+      if(GameData.guess == 0) {
+        ViewEngine.endGame();
+      }
+    }
+    //
+
+  }
+  // put the chosen letter to be .attr("disabled",true);
+}
+
+
 
 loadPokemons();
 GameData.setGeneration(1);
