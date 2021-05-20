@@ -67,8 +67,7 @@ body {
 }
 
 .pokemonBox {
-  border-top: 10px solid black;
-  border-bottom: 10px solid black;
+  border: 20px solid black;
   margin-bottom: 25px;
   width: 550px;
   height: 550px;

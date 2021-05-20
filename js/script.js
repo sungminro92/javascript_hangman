@@ -83,9 +83,9 @@ const GameData = {
   //   this.guess--;
   // },
 
-  setPlayerName: (userName) => {
-    this.playerName = userName;
-  },
+  // setPlayerName: (userName) => {
+  //   this.playerName = userName;
+  // },
 
   setGeneration: (gen) => {
     this.generation = gen;
@@ -93,8 +93,8 @@ const GameData = {
   },
 
   letterInWord: function(letter) {
-      for (i=0;i<this.pokeWord.length;i++) {
-        if (letter == this.pokeWord[i] || letter.toLowerCase() == this.pokeWord[i]) {
+      for (i=0;i<this.pokeWord.length; i++) {
+        if (letter.toLowerCase() == this.pokeWord[i]) {
           return true;
         }
       }
@@ -110,7 +110,17 @@ const GameData = {
     let randomNumber = Math.floor(Math.random()*newPokeBank.length);
     let pokemon = newPokeBank[randomNumber];
     console.log(randomNumber);
-    this.pokeWord = pokemon.name;
+
+      let nameArray = pokemon.name.split("");
+      for(i=0; i<nameArray.length; i++) {
+        if(nameArray[i] == "-") {
+          nameArray.splice(i,1);
+        }
+      }
+      this.pokeWord = nameArray.join("");
+      console.log(this.pokeWord);
+
+    // this.pokeWord = pokemon.name;
     this.pokeId = pokemon.id;
     console.log(this.pokeWord + "/" + this.pokeId);
     return this.pokeId;
@@ -124,16 +134,27 @@ const GameData = {
     let pokemonBox = $(".pokemonBox");
     pokemonBox.empty();
     imgTag.attr("src", img);
-    imgTag.attr("width", "500px");
+    imgTag.attr("width", "350px");
     imgTag.appendTo(pokemonBox);
     imgTag.attr("id", this.pokeId);
     imgTag.addClass("pokeImg");
   },
 
-  startGame: function() {
-
+  winCheck: function() {
+    var wordArray = this.pokeWord.split("");
+    for (let i=0;i<wordArray.length;i++) {
+      let letter = $("#letter" + i);
+      if (letter.text() == "") {
+        return false;
+      }
+    }
+    return true;
   },
 
+  resetGameData: function() {
+    this.guess = 10;
+    this.score = 0;
+  },
   // resetP: function() {
   //   this.guess = 10;
   //   this.score = 0;
@@ -163,20 +184,23 @@ const ViewEngine = {
     let wordArray = word.split("");
     wordBox.empty();
     for (i = 0; i < wordArray.length; i++) {
-      let letterGuessDiv = document.createElement("div");
-      $(letterGuessDiv).addClass('letterGuessDiv');
-      $(letterGuessDiv).attr("id", wordArray[i]);
-      wordBox.append(letterGuessDiv);
-      console.log(letterGuessDiv);
+      if(wordArray[i] == '-') {
+        console.log(" - is taken out");
+      } else {
+        let letterGuessDiv = document.createElement("div");
+        $(letterGuessDiv).addClass("letterGuessDiv");
+        $(letterGuessDiv).attr("id", "letter"+i+"");
+        wordBox.append(letterGuessDiv);
+      }
     }
+
   },
 
   revealLetter(letter) {
     let pokeWordArray = GameData.pokeWord.split("");
     for(i=0; i<pokeWordArray.length; i++) {
-      if(letter == pokeWordArray[i] || letter.toLowerCase() == pokeWordArray[i]) {
-        $('#'+letter).text(letter)
-        $('#'+letter.toLowerCase()).text(letter);
+      if(letter.toLowerCase() == pokeWordArray[i]) {
+        $('#letter'+i).text(letter);
       }
     }
   },
@@ -202,23 +226,67 @@ const ViewEngine = {
     $('#guessNum').text(GameData.guess);
   },
 
-  endGame: function() {
-    GameData.guess = 10;
-    GameData.score = 0;
-    $(".pokemonBox").empty();
+  changeScore: function(score) {
+    $("#scoreNum").text(score);
+  },
+
+  resetGameScreen: function() {
     $(".alphabetsContainer").empty();
     $("#letterGuessContainer").empty();
     $(".wrongBar").remove();
-    $(".pokemonBox").append("<div style='display: block; color: red; font-size: 40px;'> GAME OVER </div>")
-    $('.pokemonBox').append('<button class="playAgain">PLAY AGAIN</button>');// show Game Over in the box
-    $('.playAgain').moseOver(function() {
+    $(".pokemonBox").empty();
+  },
+
+  endGame: function() {
+    GameData.resetGameData();
+    this.resetGameScreen();
+    $(".pokemonBox").append("<div style='display: block; color: red; font-size: 40px;'>GAME OVER</div>")
+    $(".pokemonBox").append('<button class="playAgain">PLAY AGAIN</button>');// show Game Over in the box
+    $(".playAgain").mouseover(function() {
       $('.playAgain').css("color", "red");
     })
-    $('.playAgain').moseOver(function() {
+    $('.playAgain').mouseover(function() {
       $('.playAgain').css("color", "black");
     })
-    $('.pokemonBox button').click(GameController.startGame);
-  }
+    $('.pokemonBox button').click(function() {
+      console.log("restart");
+      GameController.startGame();
+    });
+  },
+
+  winScreen: function() {
+    this.resetGameScreen();
+      $(".pokemonBox").append("<div style='display: block; color: red; font-size: 40px;'> YOUR POKEMON IS FREE! </div>")
+      $(".pokemonBox").append('<button class="playNext"> TRY NEXT </button>');// show Game Over in the box
+      $(".playNext").mouseover(function() {
+        $('.playNext').css("color", "red");
+      })
+      $('.playNext').mouseover(function() {
+        $('.playNext').css("color", "black");
+      })
+      $('.pokemonBox button').click(function() {
+        console.log("restart");
+        GameController.startGame();
+      });
+    },
+
+    changetoGameScreen: function() {
+      if($('#startScreen').is(':visible')) {
+        $("#startScreen").hide(1000);
+      }
+      if(!$('#gameScreen').is(':visible')) {
+        $("#gameScreen").show(1000);
+      }
+    },
+
+    changetoStartScreen: function() {
+      if($('#gameScreen').is(':visible')) {
+        $("#gameScreen").hide(1000);
+      }
+      if(!$('#startScreen').is(':visible')) {
+        $("#startScreen").show(1000);
+      }
+    }
 }
 
 // GAME CONTROLLER
@@ -231,6 +299,9 @@ const GameController = {
     GameData.loadPokeImgs();
     var word = GameData.pokeWord;
     ViewEngine.showMysteryWord(word);
+    GameData.guess = 10;
+    ViewEngine.guessNumber();
+    ViewEngine.changetoGameScreen();
   },
 
   // playAgain() {
@@ -250,11 +321,9 @@ const GameController = {
       // add 'selected' attribute to the element.
       $("#" +letterId).addClass("selected");
       // add 'disabled' class to elements
-      ViewEngine.addAttrById(letterId, "disabled");
     } else {
       console.log("wrong letter");
       $("#" +letterId).addClass("wrong-selected");
-      ViewEngine.addAttrById(letterId, "disabled");
       ViewEngine.addWrongBar();
       GameData.guess--;
       ViewEngine.guessNumber();
@@ -262,8 +331,12 @@ const GameController = {
         ViewEngine.endGame();
       }
     }
-    //
-
+    ViewEngine.addAttrById(letterId, "disabled");
+    if(GameData.winCheck()) {
+      GameData.score ++;
+      ViewEngine.changeScore(GameData.score);
+      ViewEngine.winScreen();
+    }
   }
   // put the chosen letter to be .attr("disabled",true);
 }
@@ -284,6 +357,7 @@ window.onload = function() {
   });
   $('#playGame').click(GameController.startGame);
   $('#resetPokemon').click(GameController.startGame);
+  $('#changeGeneration').click(ViewEngine.changetoStartScreen);
 }
 
 // VIEW ENGINE

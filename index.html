@@ -22,55 +22,48 @@
    </div>
 
 <!-- START SCREEN -->
-<div id="startScreen">
-  <!-- 1. create input for player's name -->
-  <div id="userInputContainer" class="width500">
-    <input id="userName" placeholder="type player's name" >
-    <div class="floatRight">
-      <span>Generation:</span>
-      <select id="level">
-        <option value="1"> I </option>
-        <option value="2"> II </option>
-        <option value="3"> III </option>
-        <option value="4"> IV </option>
-        <option value="5"> V </option>
-        <option value="6"> VI </option>
-        <option value="7"> VII </option>
-        <option value="8"> VIII </option>
-      </select>
+  <div id="startScreen">
+    <!-- 1. create input for player's name -->
+    <div id="userInputContainer" class="width500">
+      <input id="userName" placeholder="type player's name" >
+      <div class="floatRight">
+        <span>Generation:</span>
+        <select id="level">
+          <option value="1"> I </option>
+          <option value="2"> II </option>
+          <option value="3"> III </option>
+          <option value="4"> IV </option>
+          <option value="5"> V </option>
+          <option value="6"> VI </option>
+          <option value="7"> VII </option>
+          <option value="8"> VIII </option>
+        </select>
+      </div>
+      <div class="textCenter"><button id="playGame">GOTTA FREE THEM ALL!</button></div>
+      <div class="textCenter"><button id="resetPokemon">Reset Pokemon</button></div>
     </div>
-    <div class="textCenter"><button id="playGame">GOTTA FREE THEM ALL!</button></div>
-    <div class="textCenter"><button id="resetPokemon">Reset Pokemon</button></div>
-</div>
-  <!-- 2. select difficulty/generation to play -->
-  <!-- 3.  -->
-</div>
-
-<!-- GAME SCREEN -->
-<div id="gameScreen">
-  <!-- 1. keep score and availble tries -->
-  <div id="scoreContainer" class="width500">
-    <div id="scoreDiv" class="">score:<span id="scoreNum"></span></div>
-    <div id="livesDiv" class=""><span id="guessNum">10</span> tries left</div>
-  </div>
-
-  <!-- 2. pokemon display area  -->
-  <div class="pokemonBox" width="500px" height="500px"> </div>
-
-  <!-- <canvas id="myCanvas" width="500" height="500" style="border-top:5px solid #000000; border-bottom: 5px solid #000000; "></canvas> -->
-
-  <!-- GUESSED LETTER DIV -->
-  <div id="letterGuessContainer" class=""></div>
-
-  <!-- 3. lay alphabets -->
-  <div class="alphabetsContainer pd20">
   </div>
 
 
-</div>
+  <!-- GAME SCREEN -->
+  <div id="gameScreen" style="display: none">
+    <!-- 1. keep score and availble tries -->
+    <div id="scoreContainer" class="width500">
+      <div id="scoreDiv" class="">score:<span id="scoreNum">0</span></div>
+      <div id="livesDiv" class=""><span id="guessNum">10</span> tries left</div>
+      <button id="changeGeneration">change Generation</button>
+    </div>
 
+    <!-- 2. pokemon display area  -->
+    <div class="pokemonBox" width="500px" height="500px"> </div>
 
+    <!-- <canvas id="myCanvas" width="500" height="500" style="border-top:5px solid #000000; border-bottom: 5px solid #000000; "></canvas> -->
 
+    <!-- GUESSED LETTER DIV -->
+    <div id="letterGuessContainer" class=""></div>
+
+    <!-- 3. lay alphabets -->
+    <div class="alphabetsContainer pd20"></div>
    </div>
 
 
