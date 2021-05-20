@@ -87,6 +87,16 @@ const GameData = {
   //   this.playerName = userName;
   // },
 
+  setUserName: (name) => {
+    if(name == "") {
+      this.playerName = "Anonymous";
+      $('#playerName').text(this.playerName); // display player's name in the game screen
+    } else {
+      this.playerName = name;
+      $('#playerName').text(this.playerName);
+    }
+  },
+
   setGeneration: (gen) => {
     this.generation = gen;
     // console.log(this.generation);
@@ -292,6 +302,8 @@ const ViewEngine = {
 // GAME CONTROLLER
 const GameController = {
   startGame() {
+    let name = $('#userName').val();
+    GameData.setUserName(name);
     GameData.isPlaying = true;
     // GameData.chooseRandomPoke();
     ViewEngine.prepareAlphabets();
@@ -346,7 +358,7 @@ const GameController = {
 loadPokemons();
 GameData.setGeneration(1);
 
-window.onload = function() {
+$(document).ready(function() {
   console.log("js is working fine");
   $("select").change(function() {
     let generation = 1;
@@ -358,6 +370,5 @@ window.onload = function() {
   $('#playGame').click(GameController.startGame);
   $('#resetPokemon').click(GameController.startGame);
   $('#changeGeneration').click(ViewEngine.changetoStartScreen);
-}
-
+})
 // VIEW ENGINE
