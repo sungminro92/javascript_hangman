@@ -8,7 +8,7 @@ const url = "https://pokeapi.co/api/v2/generation/"
 //
 function loadPokemons() {
   GameData.pokeBank = []; // array of pokemon
-  for(i=1; i<2; i++) { // loop through all 9 generation of pokemons
+  for(i=1; i<3; i++) { // loop through all 9 generation of pokemons
     fetch(url + i + "/")
     .then(pokeData => {
       return pokeData.json(); // generation json data
@@ -99,7 +99,7 @@ const GameData = {
 
   setGeneration: (gen) => {
     this.generation = gen;
-    // console.log(this.generation);
+    console.log("generation changed to - " + this.generation);
   },
 
   letterInWord: function(letter) {
@@ -120,7 +120,6 @@ const GameData = {
     let randomNumber = Math.floor(Math.random()*newPokeBank.length);
     let pokemon = newPokeBank[randomNumber];
     console.log(randomNumber);
-
       let nameArray = pokemon.name.split("");
       for(i=0; i<nameArray.length; i++) {
         if(nameArray[i] == "-") {
@@ -365,6 +364,7 @@ $(document).ready(function() {
     $("select option:selected").each(function() {
       generation = $(this).val();
       GameData.setGeneration(generation);
+
     })
   });
   $('#playGame').click(GameController.startGame);

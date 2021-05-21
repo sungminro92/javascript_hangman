@@ -1,5 +1,24 @@
+html {
+  height: 100%;
+  text-align: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
 body {
+  text-align: center;
   background-color: white;
+  background: linear-gradient(#99e6ff,#66ff99);
+  background-color: transparent;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 24px;
+}
+
+.font-regular {
+  font-size: 24px;
 }
 
 .floatLeft {
@@ -10,8 +29,8 @@ body {
   float: right;
 }
 
-.width500 {
-  width: 500px;
+.width400 {
+  width: 400px;
 }
 
 .textCenter {
@@ -29,7 +48,7 @@ body {
 }
 
 .letterGuessDiv {
-  background-color: white;
+  background-color: transparent;
    padding: 5px;
    display: inline;
    width: 40px;
@@ -78,4 +97,46 @@ body {
 .letterGuessContainer {
   text-align: center;
   height: 100%;
+}
+
+.small-font {
+  font-size: 15px;
+}
+
+.custom-select {
+  height: 100px;
+}
+
+#userName {
+  height: 35px;
+  /* border-radius: 5px; */
+  border: 2px solid black;
+  box-shadow: 5px 5px;
+}
+
+
+select {
+  width: 150px;
+  height: 35px;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 5px;
+  box-shadow: 5px 5px;
+}
+  /* outline-color: blue;
+  outline-width: 2px; */
+
+button {
+  border-radius: 5px;
+  /* background-color: white; */
+  background:transparent;
+  box-shadow: 5px 5px;
+  border: 2px solid black;
+  font-size: 18px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+button:hover {
+  background-color: white;
 }

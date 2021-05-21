@@ -4,33 +4,39 @@
    <title>FREE-MON</title>
    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
 
-   <!-- FONT -->
-
+   <!-- BOOTSTRAP -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
    <!-- Latest compiled and minified CSS -->
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
    <!-- Optional theme -->
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
    <!-- CSS LINK -->
    <link rel="stylesheet" type="text/css" href="css/style.css">
-   <!-- BOOTSTRAP -->
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+   <!-- FONT -->
+   <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
 
 </head>
 <body >
 
 <!-- LOGO LINK  -->
-   <div class="logo">
-      <a href="index.html"><img src="http://i.imgur.com/hWvDDEP.png" style="width:500px" ></a>
+   <div class="logo container-fluid">
+      <a href="index.html"><img class="width400" src="http://i.imgur.com/hWvDDEP.png" ></a>
    </div>
 
 <!-- START SCREEN -->
-  <div id="startScreen">
+  <div id="startScreen" class="container text-center">
     <!-- 1. create input for player's name -->
-    <div id="userInputContainer" class="width500">
-      <input id="userName" placeholder="type player's name" >
-      <div class="floatRight">
-        <span>Generation:</span>
-        <select id="level">
+    <div id="userInputContainer" class="mx-auto width400">
+      <div class="mt-5 mb-5">
+        <label for="userName" class="small-font mt-3">player's name:</label>
+        <input id="userName" class="small-font text-center" placeholder="type player's name" >
+      </div>
+
+      <label class="small-font">Choose a generation:</label>
+      <div class="custom-select">
+        <select id="level" class="small-font ">
           <option value="1"> I </option>
           <option value="2"> II </option>
           <option value="3"> III </option>
@@ -41,23 +47,29 @@
           <option value="8"> VIII </option>
         </select>
       </div>
-      <div class="textCenter"><button id="playGame">GOTTA FREE THEM ALL!</button></div>
-      <div class="textCenter"><button id="resetPokemon">Reset Pokemon</button></div>
+
+      <div class="mb-5 width400" height>
+        <button id="playGame" class=" width400">GOTTA FREE THEM ALL!</button>
+      </div>
+
     </div>
   </div>
+<!-- end of start screen -->
+
+
 
 
   <!-- GAME SCREEN -->
-  <div id="gameScreen" style="display: none">
+  <div id="gameScreen" class="center" style="display:none">
     <!-- 1. keep score and availble tries -->
-    <div id="scoreContainer" class="width500">
+    <div id="scoreContainer" class="width400">
       <div id="scoreDiv" class=""><span id="playerName"></span>'s score:<span id="scoreNum">0</span></div>
       <div id="livesDiv" class=""><span id="guessNum">10</span> tries left</div>
       <button id="changeGeneration">change Generation</button>
     </div>
 
     <!-- 2. pokemon display area  -->
-    <div class="pokemonBox" width="500px" height="500px"> </div>
+    <div class="pokemonBox width400" height="400px"> </div>
 
     <!-- <canvas id="myCanvas" width="500" height="500" style="border-top:5px solid #000000; border-bottom: 5px solid #000000; "></canvas> -->
 
