@@ -26,7 +26,11 @@
    </div>
 
 <!-- START SCREEN -->
-  <div id="startScreen" class="container text-center">
+<div id="loaderConatiner">
+  <div class="loader"></div>
+</div>
+
+  <div id="startScreen" class="container textCenter">
     <!-- 1. create input for player's name -->
     <div id="userInputContainer" class="mx-auto width400">
       <div class="mt-5 mb-5">
@@ -48,8 +52,8 @@
         </select>
       </div>
 
-      <div class="mb-5 width400" height>
-        <button id="playGame" class=" width400">GOTTA FREE THEM ALL!</button>
+      <div class="mb-5 minWidth500" height>
+        <button id="playGame" class="width400">GOTTA FREE THEM ALL!</button>
       </div>
 
     </div>
@@ -60,16 +64,17 @@
 
 
   <!-- GAME SCREEN -->
-  <div id="gameScreen" class="center" style="display:none">
+  <div id="gameScreen" class="container  textCenter" style="display:none">
     <!-- 1. keep score and availble tries -->
-    <div id="scoreContainer" class="width400">
-      <div id="scoreDiv" class=""><span id="playerName"></span>'s score:<span id="scoreNum">0</span></div>
-      <div id="livesDiv" class=""><span id="guessNum">10</span> tries left</div>
-      <button id="changeGeneration">change Generation</button>
+    <div id="scoreContainer" class="mx-auto width400 ">
+      <div id="scoreDiv" class="small-font"><span id="playerName"></span>'s score:<span id="scoreNum">0</span></div>
+      <div id="livesDiv" class="small-font mb-2"><span id="guessNum">10</span> tries left</div>
+      <button id="changeGeneration" class="mb-3 small-font">change Settings</button>
     </div>
 
     <!-- 2. pokemon display area  -->
-    <div class="pokemonBox width400" height="400px"> </div>
+    <div class="pokemonBox mx-auto textCenter" height="400px">
+    </div>
 
     <!-- <canvas id="myCanvas" width="500" height="500" style="border-top:5px solid #000000; border-bottom: 5px solid #000000; "></canvas> -->
 

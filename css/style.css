@@ -33,6 +33,10 @@ body {
   width: 400px;
 }
 
+.minWidth400 {
+
+}
+
 .textCenter {
   text-align: center;
 }
@@ -49,13 +53,13 @@ body {
 
 .letterGuessDiv {
   background-color: transparent;
-   padding: 5px;
-   display: inline;
-   width: 40px;
-   height: 30px;
-   padding: 5px;
-   border-bottom: 1px solid black;
-   margin: 0px 5px 0px 5px;
+  text-aling: center;
+  display: inline;
+  width: 50px;
+  height: 30px;
+  padding: 10px;
+  border-bottom: 2px solid black;
+  margin: 0px 5px 0px 5px;
 }
 
 .selected {
@@ -80,18 +84,23 @@ body {
 
 .pokeImg {
   position: absolute;
+  display: flex;
+  align-items: center;
+  width: 300px;
+  max-height: 300px;
   /* display: flex; */
   z-index: -1;
-  margin: 0 auto;
+  /* margin: 0 auto; */
 }
 
 .pokemonBox {
-  border: 20px solid black;
-  margin-bottom: 25px;
-  width: 550px;
-  height: 550px;
-  /* text-align: center; */
-  /* background-color: yellow; */
+  text-align: center;
+  border: 15px solid black;
+  /* width: 50%; */
+  width: 350px;
+  height: 350px;
+  max-height: 350px;
+  margin: 0 auto;
 }
 
 .letterGuessContainer {
@@ -128,15 +137,38 @@ select {
 
 button {
   border-radius: 5px;
-  /* background-color: white; */
   background:transparent;
-  box-shadow: 5px 5px;
+  /* box-shadow: 5px 5px; */
   border: 2px solid black;
   font-size: 18px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  /* padding-top: 15px; */
+  /* padding-bottom: 15px; */
+}
+
+button#playGame {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+button#changeGeneration {
+
 }
 
 button:hover {
   background-color: white;
+}
+
+#changeGeneration {
+  height: 30px;
+}
+
+.alphabetsContainer {
+  /* display: flex;
+  flex-wrap: wrap; */
+  /* width: 100%; */
+  width: 50vw;
+  min-width: 400px;
+  margin: 0 auto;
+  /* justify-content: center;
+  align-items: center; */
 }
