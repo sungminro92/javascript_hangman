@@ -112,6 +112,10 @@ body {
   font-size: 15px;
 }
 
+.tiny-font {
+  font-size: 12px;
+}
+
 .custom-select {
   height: 100px;
 }
@@ -138,7 +142,7 @@ select {
 button {
   border-radius: 5px;
   background:transparent;
-  /* box-shadow: 5px 5px; */
+  box-shadow: 5px 5px;
   border: 2px solid black;
   font-size: 18px;
   /* padding-top: 15px; */
@@ -148,6 +152,10 @@ button {
 button#playGame {
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+span#guessNum {
+ right: 0;
 }
 
 button#changeGeneration {
@@ -166,9 +174,37 @@ button:hover {
   /* display: flex;
   flex-wrap: wrap; */
   /* width: 100%; */
-  width: 50vw;
+  width: 100%;
   min-width: 400px;
   margin: 0 auto;
   /* justify-content: center;
   align-items: center; */
+}
+
+#livesDiv {
+
+}
+
+select#level {
+  padding-left: 10px;
+  /* text-align: center; */
+}
+
+#siteInfo {
+  top: 0;
+  height: 100%;
+  padding-right: 15px;
+  writing-mode: vertical-lr;
+  /* text-align: center; */
+  left: 0;
+  transform: rotate(180deg);
+}
+
+#myInfo {
+  top: 0;
+  height: 100%;
+  padding-right: 15px;
+  writing-mode: vertical-rl;
+  right: 0;
+
 }

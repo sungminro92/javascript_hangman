@@ -181,8 +181,9 @@ const ViewEngine = {
       $(letterButton).text(letter);
       $(letterButton).attr('id', letter); // id is each alphabet in the word
       $(letterButton).addClass('letters');
-      $(letterButton).addClass('flex');
-      $(letterButton).addClass('flex-wrap');
+      if (i == 13) {
+         $(alphabetsContainer).append("<br>");
+      }
       $(alphabetsContainer).append(letterButton);
       $(letterButton).click({letterId: letter}, GameController.checkLetterClick);
     }
@@ -358,6 +359,10 @@ const GameController = {
       ViewEngine.changeScore(GameData.score);
       ViewEngine.winScreen();
     }
+  },
+
+  checkLetterPressed: function() {
+
   }
   // put the chosen letter to be .attr("disabled",true);
 }
