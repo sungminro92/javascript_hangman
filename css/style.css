@@ -1,3 +1,5 @@
+/* font-family: 'Noto Serif TC', serif; */
+
 html {
   height: 100%;
   text-align: center;
@@ -6,7 +8,6 @@ html {
 .text-center {
   text-align: center;
 }
-
 
 body {
   text-align: center;
@@ -101,6 +102,8 @@ body {
   height: 350px;
   max-height: 350px;
   margin: 0 auto;
+  background-size: 300px;
+  background-repeat: no-repeat;
 }
 
 .letterGuessContainer {
@@ -207,4 +210,43 @@ select#level {
   writing-mode: vertical-rl;
   right: 0;
 
+}
+
+.won {
+  color: green;
+
+}
+
+@@keyframes winBackground {
+  0%   {background-color:red;}
+  25%  {background-color:yellow;}
+  50%  {background-color:blue;}
+  75%  {background-color:green;}
+  100% {background-color:red;}
+}
+
+.winBg {
+    /* animation-name: colorChange; */
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes colorChange {
+    0%   {color: red;}
+    14%  {color: orange;}
+    28%  {color: yellow;}
+    42% {color: green;}
+    56% {color: dodgerblue;}
+    70% {color: darkblue;}
+    84% {color: rebeccapurple;}
+    98% {color: hotpink;}
+}
+
+.lost {
+  color: red;
+}
+
+.infoFont {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 12px;
 }

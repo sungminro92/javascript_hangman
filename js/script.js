@@ -1,6 +1,5 @@
 // TO DO
 // set up the game essentials
-//
 // const myCanvas = $("myCanvas");
 const url = "https://pokeapi.co/api/v2/generation/"
 
@@ -116,9 +115,6 @@ const GameData = {
     },
 
   chooseRandomPoke: function() {
-    // let it = this.generation;
-    // console.log(it); // I'm not sure why this line isn't working.
-
     let newPokeBank = this.pokeBank.filter(function(d) {
       return d. gen == this.generation; });
     let randomNumber = Math.floor(Math.random()*newPokeBank.length);
@@ -140,18 +136,24 @@ const GameData = {
   },
 
   loadPokeImgs: function() {
+    // let number = this.chooseRandomPoke();
+    // let imgUrl = "https://pokeres.bastionbot.org/images/pokemon/";
+    // let img = imgUrl + number  +  ".png";
+    // let imgTag = $(document.createElement("img"));
+    // let pokemonBox = $(".pokemonBox");
+    // pokemonBox.empty();
+    // imgTag.attr("src", img);
+    // imgTag.addClass("pokeImg");
+    // imgTag.attr("width", "300px");
+    // imgTag.appendTo(pokemonBox);
+    // imgTag.attr("id", this.pokeId);
     let number = this.chooseRandomPoke();
     let imgUrl = "https://pokeres.bastionbot.org/images/pokemon/";
     let img = imgUrl + number  +  ".png";
-    let imgTag = $(document.createElement("img"));
     let pokemonBox = $(".pokemonBox");
     pokemonBox.empty();
-    imgTag.attr("src", img);
-    imgTag.addClass("pokeImg");
-    imgTag.attr("width", "300px");
-    imgTag.appendTo(pokemonBox);
-    imgTag.attr("id", this.pokeId);
-
+    pokemonBox.css("background-image", 'url(' + img + ')');
+    pokemonBox.css("bbackground-size", '300px');
   },
 
   winCheck: function() {
@@ -204,7 +206,6 @@ const ViewEngine = {
         wordBox.append(letterGuessDiv);
       }
     }
-
   },
 
   revealLetter(letter) {
@@ -245,17 +246,26 @@ const ViewEngine = {
     $("#scoreNum").text(score);
   },
 
-  resetGameScreen: function() {
-    $(".alphabetsContainer").empty();
+  showWinScreen: () => {
+    $(".pokemonBox").css("background-color", "green");
+    $(".pokemonBox").css("background-blend-mode", "multiply");
+  },
+
+  showCorretWord: () => {
+    $(".pokemonBox").css("background-color", "red");
+    $(".pokemonBox").css("background-blend-mode", "multiply");
     $("#letterGuessContainer").empty();
+    $("#letterGuessContainer").text("Pokemon Name: " + GameData.pokeWord);
+  },
+
+  resetGameScreen: () => {
     $(".wrongBar").remove();
-    $(".pokemonBox").empty();
   },
 
   endGame: function() {
-    GameData.resetGameData();
+    this.showCorretWord();
     this.resetGameScreen();
-    $(".pokemonBox").append("<div style='display: block; color: red; font-size: 40px;'>YOUR POKEMON IS LOCKED!</div>")
+    $(".pokemonBox").append("<div style='display: block; color: black; font-size: 40px;'>YOUR POKEMON IS LOCKED!</div>")
     $(".pokemonBox").append('<button class="playAgain">PLAY AGAIN</button>');// show Game Over in the box
     $('.pokemonBox button').click(function() {
       console.log("restart");
@@ -264,9 +274,11 @@ const ViewEngine = {
   },
 
   winScreen: function() {
+    this.showWinScreen();
     this.resetGameScreen();
-    $(".pokemonBox").append("<div style='display: block; color: red; font-size: 40px;'> YOUR POKEMON IS FREE! </div>");
-    $(".pokemonBox").append('<p class="small-font nextPokemon"> Next pokemon in<br><span id="second"></span> seconds...</p>');// show Game Over in the box
+    let pokemonBox = $(".pokemonBox");
+    pokemonBox.append("<div style='display: block; color: black; font-size: 40px;'> YOUR POKEMON IS FREE! </div>");
+    pokemonBox.append('<p class="small-font nextPokemon"> Next pokemon in<br><span id="second"></span> seconds...</p>');// show Game Over in the box
       let num = 5;
       let secondSpan = $("#second");
       secondSpan.text(num);
@@ -274,7 +286,11 @@ const ViewEngine = {
         num--;
         secondSpan.text(num);
       },1000);
+      // $("letterGuessContainer").css("animation-name","none");
+      // setTimeout(this.resetGameScreen, 5000);
       setTimeout(GameController.startGame, 5000);
+
+
       // $(".pokemonBox").append('<button class="playNext"> TRY NEXT </button>');// show Game Over in the box
       // $(".playNext").mouseover(function() {
       //   $('.playNext').css("color", "red");
@@ -310,6 +326,8 @@ const ViewEngine = {
 // GAME CONTROLLER
 const GameController = {
   startGame() {
+    $(".pokemonBox").css("background-color", "white");
+    $(".pokemonBox").css("background-blend-mode", "multiply");
     let name = $('#userName').val();
     ViewEngine.addStyleById("guessNum", "color", "black");
     GameData.setUserName(name);
@@ -360,14 +378,7 @@ const GameController = {
       ViewEngine.winScreen();
     }
   },
-
-  checkLetterPressed: function() {
-
-  }
-  // put the chosen letter to be .attr("disabled",true);
 }
-
-
 
 loadPokemons();
 GameData.setGeneration(1);
