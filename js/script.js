@@ -290,17 +290,6 @@ const ViewEngine = {
       // setTimeout(this.resetGameScreen, 5000);
       setTimeout(GameController.startGame, 5000);
 
-
-      // $(".pokemonBox").append('<button class="playNext"> TRY NEXT </button>');// show Game Over in the box
-      // $(".playNext").mouseover(function() {
-      //   $('.playNext').css("color", "red");
-      // })
-      // $('.playNext').mouseover(function() {
-      //   $('.playNext').css("color", "black");
-      // })
-      // $('.pokemonBox button').click(function() {
-      //   console.log("restart");
-      //   GameController.startGame();
       // });
     },
 
