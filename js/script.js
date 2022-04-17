@@ -1,13 +1,9 @@
-// TO DO
-// set up the game essentials
-// const myCanvas = $("myCanvas");
 const url = "https://pokeapi.co/api/v2/generation/"
 
 const loader = $("#loaderConatiner");
 // loading animation control
 function displayLoading() {
   loader.addClass("display");
-
 }
 
 function hideLoading() {
@@ -18,52 +14,52 @@ function hideLoading() {
 function loadPokemons() {
   displayLoading();
   GameData.pokeBank = []; // array of pokemon
-  for(i=1; i<3; i++) { // loop through all 9 generation of pokemons
+  for (i = 1; i < 9; i++) { // loop through all 9 generation of pokemons
     fetch(url + i + "/")
-    .then(pokeData => {
-      return pokeData.json(); // generation json data
-    })
-    .then(pokeJson => {
-      for(j=0; j<pokeJson.pokemon_species.length; j++) { // start setting individual pokemon
-        let pokemon = pokeJson.pokemon_species[j]
-        let pokeName = pokemon.name;
-        let pokeUrl = pokemon.url
-        let pokemonId;
-        fetch(pokeUrl)
-        .then(pokemonUrl => {
-          return pokemonUrl.json();
-        })
-        .then(pokemonUrlJson => {
-          let gen = pokemonUrlJson.generation.name;
-          if(gen == "generation-i") {
-            gen = 1;
-          } else if (gen == "generation-ii") {
-            gen = 2;
-          } else if (gen == "generation-iii") {
-            gen = 3;
-          } else if (gen == "generation-iv") {
-            gen = 4;
-          } else if (gen == "generation-v") {
-            gen = 5;
-          } else if (gen == "generation-vi") {
-            gen = 6;
-          } else if (gen == "generation-vii") {
-            gen = 7;
-          } else if (gen == "generation-viii") {
-            gen = 8;
-          } else {
-            gen = null;
-          }
-          pokemonId = pokemonUrlJson.id;
-          GameData.pokeBank.push({
-              id: pokemonId,
-              name: pokeName,
-              gen: gen
-          });
-          // return pokemonId;
-        })
-      } // end of setting each pokemon loop
-    })
+      .then(pokeData => {
+        return pokeData.json(); // generation json data
+      })
+      .then(pokeJson => {
+        for (j = 0; j < pokeJson.pokemon_species.length; j++) { // start setting individual pokemon
+          let pokemon = pokeJson.pokemon_species[j]
+          let pokeName = pokemon.name;
+          let pokeUrl = pokemon.url
+          let pokemonId;
+          fetch(pokeUrl)
+            .then(pokemonUrl => {
+              return pokemonUrl.json();
+            })
+            .then(pokemonUrlJson => {
+              let gen = pokemonUrlJson.generation.name;
+              if (gen == "generation-i") {
+                gen = 1;
+              } else if (gen == "generation-ii") {
+                gen = 2;
+              } else if (gen == "generation-iii") {
+                gen = 3;
+              } else if (gen == "generation-iv") {
+                gen = 4;
+              } else if (gen == "generation-v") {
+                gen = 5;
+              } else if (gen == "generation-vi") {
+                gen = 6;
+              } else if (gen == "generation-vii") {
+                gen = 7;
+              } else if (gen == "generation-viii") {
+                gen = 8;
+              } else {
+                gen = null;
+              }
+              pokemonId = pokemonUrlJson.id;
+              GameData.pokeBank.push({
+                id: pokemonId,
+                name: pokeName,
+                gen: gen
+              });
+              // return pokemonId;
+            })
+        } // end of setting each pokemon loop
+      })
   }
   hideLoading();
   console.log(GameData.pokeBank);
@@ -91,7 +87,7 @@ const GameData = {
   },
 
   setUserName: (name) => {
-    if(name == "") {
+    if (name == "") {
       this.playerName = "Anonymous";
       $('#playerName').text(this.playerName); // display player's name in the game screen
     } else {
@@ -105,29 +101,33 @@ const GameData = {
     console.log("generation changed to - " + this.generation);
   },
 
-  letterInWord: function(letter) {
-      for (i=0;i<this.pokeWord.length; i++) {
-        if (letter.toLowerCase() == this.pokeWord[i]) {
-          return true;
-        }
+  letterInWord: function (letter) {
+    for (i = 0; i < this.pokeWord.length; i++) {
+      if (letter.toLowerCase() == this.pokeWord[i]) {
+        return true;
       }
-      return false;
-    },
+    }
+    return false;
+  },
 
-  chooseRandomPoke: function() {
-    let newPokeBank = this.pokeBank.filter(function(d) {
-      return d. gen == this.generation; });
-    let randomNumber = Math.floor(Math.random()*newPokeBank.length);
+  chooseRandomPoke: function () {
+    // let it = this.generation;
+    // console.log(it); // I'm not sure why this line isn't working.
+
+    let newPokeBank = this.pokeBank.filter(function (d) {
+      return d.gen == this.generation;
+    });
+    let randomNumber = Math.floor(Math.random() * newPokeBank.length);
     let pokemon = newPokeBank[randomNumber];
     console.log(randomNumber);
-      let nameArray = pokemon.name.split("");
-      for(i=0; i<nameArray.length; i++) {
-        if(nameArray[i] == "-") {
-          nameArray.splice(i,1);
-        }
+    let nameArray = pokemon.name.split("");
+    for (i = 0; i < nameArray.length; i++) {
+      if (nameArray[i] == "-") {
+        nameArray.splice(i, 1);
       }
-      this.pokeWord = nameArray.join("");
-      console.log(this.pokeWord);
+    }
+    this.pokeWord = nameArray.join("");
+    console.log(this.pokeWord);
 
     // this.pokeWord = pokemon.name;
     this.pokeId = pokemon.id;
@@ -135,30 +135,24 @@ const GameData = {
     return this.pokeId;
   },
 
-  loadPokeImgs: function() {
-    // let number = this.chooseRandomPoke();
-    // let imgUrl = "https://pokeres.bastionbot.org/images/pokemon/";
-    // let img = imgUrl + number  +  ".png";
-    // let imgTag = $(document.createElement("img"));
-    // let pokemonBox = $(".pokemonBox");
-    // pokemonBox.empty();
-    // imgTag.attr("src", img);
-    // imgTag.addClass("pokeImg");
-    // imgTag.attr("width", "300px");
-    // imgTag.appendTo(pokemonBox);
-    // imgTag.attr("id", this.pokeId);
+  loadPokeImgs: function () {
     let number = this.chooseRandomPoke();
-    let imgUrl = "https://pokeres.bastionbot.org/images/pokemon/";
-    let img = imgUrl + number  +  ".png";
+    let imgUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+    let img = imgUrl + number + ".png";
+    let imgTag = $(document.createElement("img"));
     let pokemonBox = $(".pokemonBox");
     pokemonBox.empty();
-    pokemonBox.css("background-image", 'url(' + img + ')');
-    pokemonBox.css("bbackground-size", '300px');
+    imgTag.attr("src", img);
+    imgTag.addClass("pokeImg");
+    imgTag.attr("width", "300px");
+    imgTag.appendTo(pokemonBox);
+    imgTag.attr("id", this.pokeId);
+    imgTag.attr("alt", this.pokeWord);
   },
 
-  winCheck: function() {
+  winCheck: function () {
     var wordArray = this.pokeWord.split("");
-    for (let i=0;i<wordArray.length;i++) {
+    for (let i = 0; i < wordArray.length; i++) {
       let letter = $("#letter" + i);
       if (letter.text() == "") {
         return false;
@@ -167,7 +161,7 @@ const GameData = {
     return true;
   },
 
-  resetGameData: function() {
+  resetGameData: function () {
     this.guess = 10;
     this.score = 0;
   },
@@ -177,17 +171,17 @@ const ViewEngine = {
   prepareAlphabets() {
     let alphabetsContainer = $(".alphabetsContainer")
     alphabetsContainer.empty();
-    for(i=0; i<26; i++) {
+    for (i = 0; i < 26; i++) {
       let letter = String.fromCharCode(65 + i);
       let letterButton = document.createElement("button");
       $(letterButton).text(letter);
       $(letterButton).attr('id', letter); // id is each alphabet in the word
       $(letterButton).addClass('letters');
       if (i == 13) {
-         $(alphabetsContainer).append("<br>");
+        $(alphabetsContainer).append("<br>");
       }
       $(alphabetsContainer).append(letterButton);
-      $(letterButton).click({letterId: letter}, GameController.checkLetterClick);
+      $(letterButton).click({ letterId: letter }, GameController.checkLetterClick);
     }
   },
 
@@ -197,126 +191,121 @@ const ViewEngine = {
     let wordArray = word.split("");
     wordBox.empty();
     for (i = 0; i < wordArray.length; i++) {
-      if(wordArray[i] == '-') {
+      if (wordArray[i] == '-') {
         console.log(" - is taken out");
       } else {
         let letterGuessDiv = document.createElement("div");
         $(letterGuessDiv).addClass("letterGuessDiv");
-        $(letterGuessDiv).attr("id", "letter"+i+"");
+        $(letterGuessDiv).attr("id", "letter" + i + "");
         wordBox.append(letterGuessDiv);
       }
     }
+
   },
 
   revealLetter(letter) {
     let pokeWordArray = GameData.pokeWord.split("");
-    for(i=0; i<pokeWordArray.length; i++) {
-      if(letter.toLowerCase() == pokeWordArray[i]) {
-        $('#letter'+i).text(letter);
+    for (i = 0; i < pokeWordArray.length; i++) {
+      if (letter.toLowerCase() == pokeWordArray[i]) {
+        $('#letter' + i).text(letter);
       }
     }
   },
 
-  addAttrByClass: function(className, attribute) { // useful to add attribute to classes
+  addAttrByClass: function (className, attribute) { // useful to add attribute to classes
     $('.' + className).attr(attribute, true);
   },
 
-  addAttrById: function(idName, attribute) {
+  addAttrById: function (idName, attribute) {
     $('#' + idName).attr(attribute, true);
   },
 
-  addStyleById: function(idName, property, value) {
+  addStyleById: function (idName, property, value) {
     $('#' + idName).css(property, value);
   },
 
   addWrongBar() {
     let pokemonBox = $('.pokemonBox');
     $('.pokemonBox').append('<div class="wrongBar"></div>');
-    $(".wrongBar").css("width", pokemonBox.width()/20);
+    $(".wrongBar").css("width", pokemonBox.width() / 20);
     $('.wrongBar').css("height", pokemonBox.height());
-    $('.wrongBar').css("marginLeft", pokemonBox.width()/20);
+    $('.wrongBar').css("marginLeft", pokemonBox.width() / 20);
     // $('.wrongBar').style.marginLeft(pokemonBox.width()/20);
   },
 
-  guessNumber: function() {
+  guessNumber: function () {
     $('#guessNum').text(GameData.guess);
   },
 
-  changeScore: function(score) {
+  changeScore: function (score) {
     $("#scoreNum").text(score);
   },
 
-  showWinScreen: () => {
-    $(".pokemonBox").css("background-color", "green");
-    $(".pokemonBox").css("background-blend-mode", "multiply");
-  },
-
-  showCorretWord: () => {
-    $(".pokemonBox").css("background-color", "red");
-    $(".pokemonBox").css("background-blend-mode", "multiply");
+  resetGameScreen: function () {
+    $(".alphabetsContainer").empty();
     $("#letterGuessContainer").empty();
-    $("#letterGuessContainer").text("Pokemon Name: " + GameData.pokeWord);
-  },
-
-  resetGameScreen: () => {
     $(".wrongBar").remove();
+    $(".pokemonBox").empty();
   },
 
-  endGame: function() {
-    this.showCorretWord();
+  endGame: function () {
+    GameData.resetGameData();
     this.resetGameScreen();
-    $(".pokemonBox").append("<div style='display: block; color: black; font-size: 40px;'>YOUR POKEMON IS LOCKED!</div>")
+    $(".pokemonBox").append("<div style='display: block; color: red; font-size: 40px;'>YOUR POKEMON IS LOCKED!</div>")
     $(".pokemonBox").append('<button class="playAgain">PLAY AGAIN</button>');// show Game Over in the box
-    $('.pokemonBox button').click(function() {
+    $('.pokemonBox button').click(function () {
       console.log("restart");
       GameController.startGame();
     });
   },
 
-  winScreen: function() {
-    this.showWinScreen();
+  winScreen: function () {
     this.resetGameScreen();
-    let pokemonBox = $(".pokemonBox");
-    pokemonBox.append("<div style='display: block; color: black; font-size: 40px;'> YOUR POKEMON IS FREE! </div>");
-    pokemonBox.append('<p class="small-font nextPokemon"> Next pokemon in<br><span id="second"></span> seconds...</p>');// show Game Over in the box
-      let num = 5;
-      let secondSpan = $("#second");
+    $(".pokemonBox").append("<div style='display: block; color: red; font-size: 40px;'> YOUR POKEMON IS FREE! </div>");
+    $(".pokemonBox").append('<p class="small-font nextPokemon"> Next pokemon in<br><span id="second"></span> seconds...</p>');// show Game Over in the box
+    let num = 5;
+    let secondSpan = $("#second");
+    secondSpan.text(num);
+    setInterval(function () {
+      num--;
       secondSpan.text(num);
-      setInterval(function() {
-        num--;
-        secondSpan.text(num);
-      },1000);
-      // $("letterGuessContainer").css("animation-name","none");
-      // setTimeout(this.resetGameScreen, 5000);
-      setTimeout(GameController.startGame, 5000);
+    }, 1000);
+    setTimeout(GameController.startGame, 5000);
+    // $(".pokemonBox").append('<button class="playNext"> TRY NEXT </button>');// show Game Over in the box
+    // $(".playNext").mouseover(function() {
+    //   $('.playNext').css("color", "red");
+    // })
+    // $('.playNext').mouseover(function() {
+    //   $('.playNext').css("color", "black");
+    // })
+    // $('.pokemonBox button').click(function() {
+    //   console.log("restart");
+    //   GameController.startGame();
+    // });
+  },
 
-      // });
-    },
-
-    changetoGameScreen: function() {
-      if($('#startScreen').is(':visible')) {
-        $("#startScreen").hide(1000);
-      }
-      if(!$('#gameScreen').is(':visible')) {
-        $("#gameScreen").show(1000);
-      }
-    },
-
-    changetoStartScreen: function() {
-      if($('#gameScreen').is(':visible')) {
-        $("#gameScreen").hide(1000);
-      }
-      if(!$('#startScreen').is(':visible')) {
-        $("#startScreen").show(1000);
-      }
+  changetoGameScreen: function () {
+    if ($('#startScreen').is(':visible')) {
+      $("#startScreen").hide(1000);
     }
+    if (!$('#gameScreen').is(':visible')) {
+      $("#gameScreen").show(1000);
+    }
+  },
+
+  changetoStartScreen: function () {
+    if ($('#gameScreen').is(':visible')) {
+      $("#gameScreen").hide(1000);
+    }
+    if (!$('#startScreen').is(':visible')) {
+      $("#startScreen").show(1000);
+    }
+  }
 }
 
 // GAME CONTROLLER
 const GameController = {
   startGame() {
-    $(".pokemonBox").css("background-color", "white");
-    $(".pokemonBox").css("background-blend-mode", "multiply");
     let name = $('#userName').val();
     ViewEngine.addStyleById("guessNum", "color", "black");
     GameData.setUserName(name);
@@ -337,46 +326,53 @@ const GameController = {
   //   GameData.guess = 10;
   // },
 
-// handleLetterClick
-  checkLetterClick: function(event) {
+  // handleLetterClick
+  checkLetterClick: function (event) {
     let letterId = event.data.letterId; // this is the alphabet
     console.log(letterId);
     // if correct
-    if(GameData.letterInWord(letterId)) {
+    if (GameData.letterInWord(letterId)) {
       console.log("correct letter");
       // reveal the letter in the pokeWord
       ViewEngine.revealLetter(letterId);
       // add 'selected' attribute to the element.
-      $("#" +letterId).addClass("selected");
+      $("#" + letterId).addClass("selected");
       // add 'disabled' class to elements
     } else {
       console.log("wrong letter");
-      $("#" +letterId).addClass("wrong-selected");
+      $("#" + letterId).addClass("wrong-selected");
       ViewEngine.addWrongBar();
       GameData.guess--;
       ViewEngine.guessNumber();
       ViewEngine.addStyleById("guessNum", "color", "red");
-      if(GameData.guess == 0) {
+      if (GameData.guess == 0) {
         ViewEngine.endGame();
       }
     }
     ViewEngine.addAttrById(letterId, "disabled");
-    if(GameData.winCheck()) {
-      GameData.score ++;
+    if (GameData.winCheck()) {
+      GameData.score++;
       ViewEngine.changeScore(GameData.score);
       ViewEngine.winScreen();
     }
   },
+
+  checkLetterPressed: function () {
+
+  }
+  // put the chosen letter to be .attr("disabled",true);
 }
+
+
 
 loadPokemons();
 GameData.setGeneration(1);
 
-$(document).ready(function() {
+$(document).ready(function () {
   console.log("js is working fine");
-  $("select").change(function() {
+  $("select").change(function () {
     let generation = 1;
-    $("select option:selected").each(function() {
+    $("select option:selected").each(function () {
       generation = $(this).val();
       GameData.setGeneration(generation);
 
